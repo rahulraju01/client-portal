@@ -16,12 +16,17 @@
         <dataLoadCoordinator auto="true"/>
     </facets>
     <layout>
+        <formLayout>
+            <textField id="firstName" label="First Name" required="true"/>
+            <textField id="lastName" label="Last Name"/>
+        </formLayout>
+
         <button id="createClientData" text="Create"/>
         <dataGrid id="clientDetailDataGrid"
                   width="100%"
                   minHeight="20em"
                   dataContainer="clientDetailDc"
-                  editorBuffered="false">
+                  editorBuffered="true">
             <columns>
                 <column property="firstName" editable="true"/>
                 <column property="lastName" editable="true"/>
