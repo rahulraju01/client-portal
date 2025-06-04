@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      title="msg://clientDetailView.title">
+    <data readOnly="true">
+        <collection id="clientDetailDc"
+                    class="com.company.gamespace.entity.ClientDetails"
+                    fetchPlan="_local">
+            <loader id="clientDetailDl">
+                <query>
+                    <![CDATA[select e from ClientDetails e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+    </facets>
+    <layout>
+        <button id="createClientData" text="Create"/>
+        <dataGrid id="clientDetailDataGrid"
+                  width="100%"
+                  minHeight="20em"
+                  dataContainer="clientDetailDc"
+                  editorBuffered="false">
+            <columns>
+                <column property="firstName" editable="true"/>
+                <column property="lastName" editable="true"/>
+                <column property="entryTime" key="entryTime"/>
+                <column property="exitTime" key="exitTime"/>
+                <column property="totalHours"/>
+                <column property="finalCost"/>
+                <editorActionsColumn key="bufferedEditorColumn" header="Actions">
+                    <editButton icon="lumo:edit"/>
+                    <saveButton icon="CHECK" themeNames="success"/>
+                    <cancelButton icon="lumo:cross" themeNames="error"/>
+                </editorActionsColumn>
+            </columns>
+        </dataGrid>
+    </layout>
+</view>
