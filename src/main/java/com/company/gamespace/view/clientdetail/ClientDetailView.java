@@ -15,6 +15,7 @@ import io.jmix.flowui.component.grid.DataGrid;
 import io.jmix.flowui.component.textfield.TypedTextField;
 import io.jmix.flowui.kit.component.button.JmixButton;
 import io.jmix.flowui.model.CollectionContainer;
+import io.jmix.flowui.model.CollectionLoader;
 import io.jmix.flowui.view.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -50,6 +51,8 @@ public class ClientDetailView extends StandardView {
     private TypedTextField<Object> firstName;
     @ViewComponent
     private TypedTextField<Object> lastName;
+    @ViewComponent
+    private CollectionLoader<ClientDetails> clientDetailDl;
 
     @ViewComponent
 
@@ -60,6 +63,8 @@ public class ClientDetailView extends StandardView {
 
     @Install(to = "clientDetailDataGrid.@editor", subject = "openListener")
     protected void onCustomersDataGridEditorOpened(EditorOpenEvent<ClientDetails> event) {
+        entryTimePicker.setValue(Objects.nonNull(event.getItem().getEntryTime()) ? event.getItem().getEntryTime().toLocalTime() : LocalTime.of(10, 0));
+        exitTimePicker.setValue(Objects.nonNull(event.getItem().getExitTime()) ? event.getItem().getExitTime().toLocalTime() : LocalTime.of(17, 0));
         showNotification("Editor opended");
     }
 
@@ -70,7 +75,13 @@ public class ClientDetailView extends StandardView {
 
     @Install(to = "clientDetailDataGrid.@editor", subject = "saveListener")
     protected void onCustomersDataGridEditorSaved(EditorSaveEvent<ClientDetails> event) {
+        LocalDateTime entryTime = LocalDateTime.of(LocalDate.now(), entryTimePicker.getValue());
+        LocalDateTime exitTime = LocalDateTime.of(LocalDate.now(), exitTimePicker.getValue());
+        event.getItem().setEntryTime(entryTime.atOffset(ZoneOffset.systemDefault().getRules().getOffset(entryTime)));
+        event.getItem().setExitTime(exitTime.atOffset(ZoneOffset.systemDefault().getRules().getOffset(exitTime)));
+
         if (validateClientDetails(event.getItem())) {
+            saveClientDetails(event.getItem());
             showNotification("Changes saved to the database!");
         } else {
             showNotification("Validation Error");
@@ -98,15 +109,18 @@ public class ClientDetailView extends StandardView {
 
         // Validation before saving data
         if (validateClientDetails(clientDetails)) {
-            dataManager.save(clientDetails);
-//            clientDetailDc.getItems().add(clientDetails);
-            clientDetailDataGrid.getDataProvider().refreshAll();  // This refreshes the grid
-            showNotification("Client data saved successfully!");
+            saveClientDetails(clientDetails);
         } else {
             showNotification("First Name is required.");
         }
     }
 
+    private void saveClientDetails(ClientDetails clientDetails){
+        dataManager.save(clientDetails);
+        clientDetailDl.load();
+        clientDetailDataGrid.getDataProvider().refreshAll();  // This refreshes the grid
+        showNotification("Client data saved successfully!");
+    }
     // Validation method
     private boolean validateClientDetails(ClientDetails clientDetails) {
         if (clientDetails.getFirstName() == null || clientDetails.getFirstName().isEmpty()) {
@@ -121,12 +135,12 @@ public class ClientDetailView extends StandardView {
     // Adding TimePicker for entryTime and exitTime
     public void configureTimePickers() {
         entryTimePicker.setStep(Duration.ofMinutes(30)); // 30-minute intervals
-        entryTimePicker.setValue(LocalTime.of(10, 0));  // default time value
-        entryTimePicker.setWidth(90.0f, Unit.PERCENTAGE);
+//        entryTimePicker.setValue(LocalTime.of(10, 0));  // default time value
+        entryTimePicker.setWidth(100.0f, Unit.PERCENTAGE);
 
         exitTimePicker.setStep(Duration.ofMinutes(30)); // 30-minute intervals
-        exitTimePicker.setValue(LocalTime.of(17, 0));  // default time value
-        exitTimePicker.setWidth(90.0f, Unit.PERCENTAGE);
+//        exitTimePicker.setValue(LocalTime.of(17, 0));  // default time value
+        exitTimePicker.setWidth(100.0f, Unit.PERCENTAGE);
 
         // Add time pickers to the columns
         Objects.requireNonNull(clientDetailDataGrid.getColumnByKey("entryTime"))
