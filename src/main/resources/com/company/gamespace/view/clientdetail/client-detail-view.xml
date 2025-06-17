@@ -7,7 +7,7 @@
                     fetchPlan="_local">
             <loader id="clientDetailDl">
                 <query>
-                    <![CDATA[select e from ClientDetails e]]>
+                    <![CDATA[select e from ClientDetails e order by e.createdDate desc]]>
                 </query>
             </loader>
         </collection>
@@ -16,30 +16,38 @@
         <dataLoadCoordinator auto="true"/>
     </facets>
     <layout>
-        <formLayout>
-            <textField id="firstName" label="First Name" required="true"/>
-            <textField id="lastName" label="Last Name"/>
+        <formLayout width="55%">
+            <textField id="firstName" label="First Name" required="true" css="width: 30% !important"/>
+            <textField id="lastName" label="Last Name" css="width: 30% !important"/>
         </formLayout>
-
-        <button id="createClientData" text="Create"/>
+        <hbox width="100%">
+             <button id="createClientData" text="Create"/>
+            <button id="logoutBtn" text="Logout"/>
+        </hbox>
         <dataGrid id="clientDetailDataGrid"
                   width="100%"
                   minHeight="20em"
                   dataContainer="clientDetailDc"
                   editorBuffered="true">
-            <columns>
+            <columns resizable="true">
                 <column property="firstName" editable="true"/>
                 <column property="lastName" editable="true"/>
                 <column property="entryTime" key="entryTime"/>
                 <column property="exitTime" key="exitTime"/>
-                <column property="totalHours"/>
+                <column property="totalHours" key="totalHours" header="Time used"/>
                 <column property="finalCost"/>
-                <editorActionsColumn key="bufferedEditorColumn" header="Actions">
+<!--                <column key="timeLeft" header="Time Left"/>-->
+                <editorActionsColumn key="bufferedEditorColumn" header="Actions" resizable="true">
                     <editButton icon="lumo:edit"/>
                     <saveButton icon="CHECK" themeNames="success"/>
                     <cancelButton icon="lumo:cross" themeNames="error"/>
                 </editorActionsColumn>
             </columns>
         </dataGrid>
+        <simplePagination classNames="self-center"
+                          itemsPerPageVisible="true"
+                          itemsPerPageItems="5, 10, 15"
+                          itemsPerPageDefaultValue="5"
+                          dataLoader="clientDetailDl"/>
     </layout>
 </view>

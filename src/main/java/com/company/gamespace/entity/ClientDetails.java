@@ -43,7 +43,7 @@ public class ClientDetails {
     private OffsetDateTime exitTime;
     @Column(name = "FINAL_COST")
     private BigDecimal finalCost;
-    @Column(name = "TOTAL_HOURS")
+    @Column(name = "TOTAL_HOURS", scale = 2, precision = 10)
     private BigDecimal totalHours;
     @CreatedBy
     @Column(name = "CREATED_BY")
