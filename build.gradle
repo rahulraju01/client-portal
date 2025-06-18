@@ -11,6 +11,15 @@ jmix {
     bomVersion = '2.4.5'
 }
 
+vaadin {
+    optimizeBundle = false
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.incremental = true
+}
+
 group = 'com.company'
 version = '0.0.1-SNAPSHOT'
 

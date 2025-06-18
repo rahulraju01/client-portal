@@ -143,7 +143,8 @@ public class ClientDetailView extends StandardView {
             return false; // First Name is mandatory
         }
         if (clientDetails.getEntryTime() == null) {
-            clientDetails.setEntryTime(OffsetDateTime.now()); // Default to current time (with offset) if entryTime is empty
+            OffsetDateTime nowWithSystemOffset = OffsetDateTime.now(ZoneId.systemDefault());
+            clientDetails.setEntryTime(nowWithSystemOffset);
         }
         return true;
     }
@@ -313,7 +314,7 @@ public class ClientDetailView extends StandardView {
             return;
         }
 
-        OffsetDateTime currentExitTime = OffsetDateTime.now();
+        OffsetDateTime currentExitTime = OffsetDateTime.now(ZoneId.systemDefault());
         if (Objects.isNull(selectedClient.getExitTime())) {
             selectedClient.setExitTime(currentExitTime);
         }
@@ -328,13 +329,13 @@ public class ClientDetailView extends StandardView {
         BigDecimal costPerMinute = BigDecimal.valueOf(80)
                 .divide(BigDecimal.valueOf(60), 2, RoundingMode.HALF_UP);
 
-        BigDecimal finalCost = costPerMinute.multiply(BigDecimal.valueOf(totalMinutes))
+        BigDecimal finalCost = decimalHours.multiply(BigDecimal.valueOf(80))
                 .setScale(0, RoundingMode.HALF_UP);
 
         selectedClient.setTotalHours(decimalHours);
         selectedClient.setFinalCost(finalCost);
 
-         dataManager.save(selectedClient);
+        dataManager.save(selectedClient);
         clientDetailDl.load();
         clientDetailDataGrid.getDataProvider().refreshAll();
 

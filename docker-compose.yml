@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  jmix-app:
+    build: .
+    container_name: jmix-app
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:hsqldb:file:/app/.jmix/hsqldb/gamespace
+      SPRING_DATASOURCE_USERNAME: sa
+      SPRING_DATASOURCE_PASSWORD:
