@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <mainView xmlns="http://jmix.io/schema/flowui/main-view"
+          xmlns:charts="http://jmix.io/schema/charts/ui"
           title="msg://MainView.title">
     <actions>
         <action id="logout" type="logout"/>
@@ -33,7 +34,37 @@
         </navigationBar>
         <initialLayout width="100%" height="100%">
             <hbox  width="100%" spacing="true" alignItems="BASELINE">
-            <span text="Home Page"/>
+                <vbox id="documentStatisticBarChartHolder">
+                    <hbox id="dropDownHolder">
+                        <comboBox id="yearFilter" label="Year" datatype="int" themeNames="small"/>
+                    </hbox>
+                    <hbox id="documentStatisticBarChart">
+                        <charts:chart id="revenueBarChartStatistics" width="100%" height="100%">
+                            <charts:tooltip trigger="AXIS">
+                                <charts:axisPointer type="SHADOW"/>
+                            </charts:tooltip>
+                            <charts:legend />
+
+                            <charts:xAxes>
+                                <charts:xAxis/>
+                            </charts:xAxes>
+                            <charts:yAxes>
+                                <charts:yAxis>
+                                    <charts:axisLabel formatter="{value}"/>
+                                </charts:yAxis>
+                            </charts:yAxes>
+
+                            <charts:dataSet>
+                                <charts:source categoryField="month" valueFields="modificationCount deletionCount"/>
+                            </charts:dataSet>
+
+                            <charts:series>
+                                <charts:bar name="Modification Count" barWidth="15%"/>
+                                <charts:bar name="Deletion Count" barWidth="15%"/>
+                            </charts:series>
+                        </charts:chart>
+                    </hbox>
+                </vbox>
             </hbox>
         </initialLayout>
     </appLayout>

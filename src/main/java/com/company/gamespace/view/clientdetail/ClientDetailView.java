@@ -314,7 +314,7 @@ public class ClientDetailView extends StandardView {
             return;
         }
 
-        OffsetDateTime currentExitTime = OffsetDateTime.now(ZoneId.systemDefault());
+        OffsetDateTime currentExitTime = OffsetDateTime.now(ZoneId.of("Asia/Kolkata"));
         if (Objects.isNull(selectedClient.getExitTime())) {
             selectedClient.setExitTime(currentExitTime);
         }

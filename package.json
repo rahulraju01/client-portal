@@ -17,6 +17,7 @@
     "ace-builds": "1.18.0",
     "construct-style-sheets-polyfill": "3.1.0",
     "date-fns": "2.29.3",
+    "echarts": "5.4.3",
     "lit": "3.1.4",
     "react": "18.3.1",
     "react-dom": "18.3.1",
@@ -58,6 +59,7 @@
       "ace-builds": "1.18.0",
       "construct-style-sheets-polyfill": "3.1.0",
       "date-fns": "2.29.3",
+      "echarts": "5.4.3",
       "lit": "3.1.4",
       "react": "18.3.1",
       "react-dom": "18.3.1",
@@ -83,7 +85,7 @@
       "workbox-core": "7.3.0",
       "workbox-precaching": "7.3.0"
     },
-    "hash": "855c5a007b986325ab651a73fc1a2deb0c377d25f0bb4975a1a419d36696b78f"
+    "hash": "4976c5a44189515614b62b563bca0b480db6f50253a35b72314b68b94024906c"
   },
   "overrides": {
     "@vaadin/bundles": "$@vaadin/bundles",
@@ -103,6 +105,7 @@
     "@vaadin/vaadin-themable-mixin": "$@vaadin/vaadin-themable-mixin",
     "ace-builds": "$ace-builds",
     "@vaadin/vaadin-lumo-styles": "$@vaadin/vaadin-lumo-styles",
-    "@vaadin/vaadin-material-styles": "$@vaadin/vaadin-material-styles"
+    "@vaadin/vaadin-material-styles": "$@vaadin/vaadin-material-styles",
+    "echarts": "$echarts"
   }
 }
