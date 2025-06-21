@@ -2,3 +2,11 @@
 @import url('view/main-view.css');
 @import url('view/main-view-top-menu.css');
 @import url('view/login-view.css');
+
+.total-revenue-label {
+    font-size: 20px;
+    font-weight: bold;
+    color: #2e7d32; /* Material green */
+    margin-top: 10px;
+    margin-bottom: 10px;
+}

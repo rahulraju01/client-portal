@@ -2,9 +2,10 @@ package com.company.gamespace.service;
 
 import com.company.gamespace.dto.MonthlyRevenueDto;
 import com.company.gamespace.dto.TotalRevenueStatistics;
+import io.jmix.core.DataManager;
+import io.jmix.core.entity.KeyValueEntity;
 import jakarta.persistence.EntityManager;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -13,28 +14,34 @@ import java.time.format.TextStyle;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Component
+@Service
 public class ClientDetailService {
-    @Autowired
+    @PersistenceContext
     private EntityManager entityManager;
 
-    private List<MonthlyRevenueDto> getMonthlyRevenue() {
-        List<Object[]> results = entityManager.createNativeQuery("""
-                        SELECT MONTH(entry_time) AS month, SUM(final_cost) AS total_revenue
-                        FROM client_details
-                        WHERE entry_time IS NOT NULL
-                          AND YEAR(entry_time) = YEAR(CURDATE())
-                        GROUP BY MONTH(entry_time)
-                        ORDER BY month
-                        """)
-                .getResultList();
+    public List<MonthlyRevenueDto> getMonthlyRevenue() {
 
-        return results.stream()
-                .map(row -> MonthlyRevenueDto.builder()
-                        .month(((Number) row[0]).intValue())
-                        .totalRevenue((BigDecimal) row[1])
-                        .build())
-                .toList();
+        @SuppressWarnings("unchecked")
+        List<Object[]> resultList = entityManager.createNativeQuery("""
+                    SELECT\s
+                        MONTH(entry_time) AS month,\s
+                        SUM(final_cost) AS total_revenue
+                    FROM\s
+                        client_details
+                    WHERE\s
+                        entry_time IS NOT NULL\s
+                        AND YEAR(entry_time) = YEAR(CURDATE())
+                    GROUP BY\s
+                        MONTH(entry_time)
+                    ORDER BY\s
+                        MONTH(entry_time)
+               \s""").getResultList();
+
+        return resultList.stream()
+                .map(row -> new MonthlyRevenueDto(
+                        ((Number) row[0]).intValue(),
+                        (BigDecimal) row[1])
+                ).toList();
     }
 
     public List<TotalRevenueStatistics> getTotalRevenueStats() {

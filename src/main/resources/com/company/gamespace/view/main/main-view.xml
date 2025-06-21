@@ -33,34 +33,40 @@
             </vbox>
         </navigationBar>
         <initialLayout width="100%" height="100%">
-            <hbox  width="100%" spacing="true" alignItems="BASELINE">
-                <vbox id="documentStatisticBarChartHolder">
-                    <hbox id="dropDownHolder">
-                        <comboBox id="yearFilter" label="Year" datatype="int" themeNames="small"/>
+            <hbox  width="100%" spacing="true" alignItems="BASELINE" height="100%">
+                <vbox id="documentStatisticBarChartHolder" width="100%" height="100%">
+                    <hbox id="totalRevenueLayout">
+<!--                        <comboBox id="yearFilter" label="Year" datatype="int" themeNames="small"/>-->
+                        <span id="totalRevenueLabel" classNames="total-revenue-label" text="Total Revenue: ₹0"/>
                     </hbox>
-                    <hbox id="documentStatisticBarChart">
+                    <hbox id="documentStatisticBarChart" width="100%" height="100%">
                         <charts:chart id="revenueBarChartStatistics" width="100%" height="100%">
                             <charts:tooltip trigger="AXIS">
-                                <charts:axisPointer type="SHADOW"/>
+                                <charts:axisPointer type="SHADOW" />
+                                <charts:formatterFunction>
+                                    <![CDATA[
+                                            function (params) {
+                                            return params[0].data.month + ': ₹' + params[0].data.totalRevenue;}
+                                    ]]>
+                                </charts:formatterFunction>
                             </charts:tooltip>
                             <charts:legend />
 
                             <charts:xAxes>
-                                <charts:xAxis/>
+                                <charts:xAxis name="Month"/>
                             </charts:xAxes>
                             <charts:yAxes>
-                                <charts:yAxis>
+                                <charts:yAxis name="Revenue (₹)">
                                     <charts:axisLabel formatter="{value}"/>
                                 </charts:yAxis>
                             </charts:yAxes>
 
                             <charts:dataSet>
-                                <charts:source categoryField="month" valueFields="modificationCount deletionCount"/>
+                                <charts:source categoryField="month" valueFields="totalRevenue"/>
                             </charts:dataSet>
 
                             <charts:series>
-                                <charts:bar name="Modification Count" barWidth="15%"/>
-                                <charts:bar name="Deletion Count" barWidth="15%"/>
+                                <charts:bar name="Monthly Revenue Summary" barWidth="30%"/>
                             </charts:series>
                         </charts:chart>
                     </hbox>

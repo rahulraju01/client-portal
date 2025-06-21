@@ -29,6 +29,7 @@ import io.jmix.flowui.model.CollectionContainer;
 import io.jmix.flowui.model.CollectionLoader;
 import io.jmix.flowui.view.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -43,6 +44,8 @@ import java.util.UUID;
 @ViewController(id = "ClientDetailView")
 @ViewDescriptor(path = "client-detail-view.xml")
 public class ClientDetailView extends StandardView {
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
     @Autowired
     protected Notifications notifications;
     @ViewComponent
@@ -341,5 +344,4 @@ public class ClientDetailView extends StandardView {
 
         showNotification("Client logged out. Total Hours: " + decimalHours + ", Amount: ₹" + finalCost);
     }
-
 }

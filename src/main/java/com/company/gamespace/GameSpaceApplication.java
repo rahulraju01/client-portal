@@ -24,7 +24,6 @@ import javax.sql.DataSource;
 @Theme(value = "GameSpace")
 @PWA(name = "GameSpace", shortName = "GameSpace")
 @SpringBootApplication
-@EnableJmixDataRepositories
 public class GameSpaceApplication implements AppShellConfigurator {
 
     @Autowired
